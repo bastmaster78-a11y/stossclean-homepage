@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, Phone, Sparkles } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/constants";
@@ -14,13 +14,24 @@ export default function Header() {
   const scrolled = useScrolled(10);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [menuOpen]);
+
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-40 transition-all duration-300",
-        scrolled
-          ? "bg-white/90 shadow-sm shadow-slate-900/5 backdrop-blur-md"
-          : "bg-white/60 backdrop-blur-sm",
+        menuOpen
+          ? "bg-white shadow-sm shadow-slate-900/5"
+          : scrolled
+            ? "bg-white/90 shadow-sm shadow-slate-900/5 backdrop-blur-md"
+            : "bg-white/60 backdrop-blur-sm",
       )}
     >
       <Container>
