@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Phone, Send } from "lucide-react";
-import { quoteFormSchema, type QuoteFormSchema } from "@/lib/validations";
+import { quoteFormSchema, ROOM_COUNT_SERVICE_IDS, type QuoteFormSchema } from "@/lib/validations";
 import type { QuoteContent, SectionHeadingContent, ServiceContent } from "@/lib/content-schema";
 import { KOREA_REGIONS } from "@/lib/korea-regions";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ interface QuoteFormProps {
 }
 
 const AREA_OPTIONS = Array.from({ length: 300 }, (_, i) => `${i + 1}평`);
+const ROOM_COUNT_OPTIONS = Array.from({ length: 10 }, (_, i) => `${i + 1}개`);
 
 export default function QuoteForm({ services, quote, heading, phone, phoneRaw }: QuoteFormProps) {
   const [submitState, setSubmitState] = useState<"idle" | "success">("idle");
@@ -33,10 +34,14 @@ export default function QuoteForm({ services, quote, heading, phone, phoneRaw }:
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<QuoteFormSchema>({
     resolver: zodResolver(quoteFormSchema),
   });
+
+  const serviceType = watch("serviceType");
+  const showRoomCount = ROOM_COUNT_SERVICE_IDS.includes(serviceType);
 
   const onSubmit = async (data: QuoteFormSchema) => {
     await new Promise((resolve) => setTimeout(resolve, 900));
@@ -147,7 +152,13 @@ export default function QuoteForm({ services, quote, heading, phone, phoneRaw }:
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <Field label="서비스 종류" error={errors.serviceType?.message}>
                       <select
-                        {...register("serviceType")}
+                        {...register("serviceType", {
+                          onChange: (e) => {
+                            if (!ROOM_COUNT_SERVICE_IDS.includes(e.target.value)) {
+                              setValue("roomCount", "");
+                            }
+                          },
+                        })}
                         defaultValue=""
                         className={inputClass(!!errors.serviceType)}
                       >
@@ -178,6 +189,25 @@ export default function QuoteForm({ services, quote, heading, phone, phoneRaw }:
                       </select>
                     </Field>
                   </div>
+
+                  {showRoomCount && (
+                    <Field label="방 개수" error={errors.roomCount?.message}>
+                      <select
+                        {...register("roomCount")}
+                        defaultValue=""
+                        className={inputClass(!!errors.roomCount)}
+                      >
+                        <option value="" disabled>
+                          선택해주세요
+                        </option>
+                        {ROOM_COUNT_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                  )}
 
                   <Field label="주소" error={errors.address?.message}>
                     <div className="grid grid-cols-2 gap-3">

@@ -8,6 +8,7 @@ export interface QuoteFormValues {
   phone: string;
   serviceType: string;
   area: string;
+  roomCount?: string;
   address: string;
   message?: string;
   privacyAgree: boolean;
