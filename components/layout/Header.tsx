@@ -3,14 +3,19 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, Phone, Sparkles } from "lucide-react";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS } from "@/lib/constants";
+import type { SiteInfoContent } from "@/lib/content-schema";
 import { useScrolled } from "@/hooks/useScrolled";
 import { cn } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import MobileMenu from "@/components/layout/MobileMenu";
 
-export default function Header() {
+interface HeaderProps {
+  site: SiteInfoContent;
+}
+
+export default function Header({ site }: HeaderProps) {
   const scrolled = useScrolled(10);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -41,9 +46,9 @@ export default function Header() {
               <Sparkles className="h-5 w-5" />
             </span>
             <span className="flex flex-col leading-tight">
-              <span className="text-lg font-extrabold text-slate-900">{SITE.name}</span>
+              <span className="text-lg font-extrabold text-slate-900">{site.name}</span>
               <span className="text-[11px] font-medium tracking-wider text-brand-500">
-                {SITE.nameEn}
+                {site.nameEn}
               </span>
             </span>
           </Link>
@@ -62,11 +67,11 @@ export default function Header() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <a
-              href={`tel:${SITE.phoneRaw}`}
+              href={`tel:${site.phoneRaw}`}
               className="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-brand-600"
             >
               <Phone className="h-4 w-4 text-brand-600" />
-              {SITE.phone}
+              {site.phone}
             </a>
             <Button href="#quote" size="sm">
               무료 견적 문의
@@ -83,7 +88,7 @@ export default function Header() {
         </div>
       </Container>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} site={site} />
     </header>
   );
 }

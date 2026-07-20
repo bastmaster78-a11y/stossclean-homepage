@@ -3,11 +3,16 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
-import { TESTIMONIALS } from "@/lib/constants";
+import type { SectionHeadingContent, TestimonialContent } from "@/lib/content-schema";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 
-export default function Testimonials() {
+interface TestimonialsProps {
+  testimonials: TestimonialContent[];
+  heading: SectionHeadingContent;
+}
+
+export default function Testimonials({ testimonials, heading }: TestimonialsProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const scrollByCard = (direction: 1 | -1) => {
@@ -23,9 +28,9 @@ export default function Testimonials() {
       <Container>
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeading
-            eyebrow="TESTIMONIALS"
-            title="스토스클린을 경험한 고객의 이야기"
-            description="실제 이용 고객님들이 남겨주신 생생한 후기입니다."
+            eyebrow={heading.eyebrow}
+            title={heading.title}
+            description={heading.description}
             align="left"
             className="sm:items-start sm:text-left"
           />
@@ -55,7 +60,7 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="scrollbar-none mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4"
         >
-          {TESTIMONIALS.map((testimonial) => (
+          {testimonials.map((testimonial) => (
             <article
               key={testimonial.id}
               data-card

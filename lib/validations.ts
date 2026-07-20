@@ -1,14 +1,5 @@
 import { z } from "zod";
 
-export const SERVICE_TYPE_OPTIONS = [
-  { value: "move-in", label: "입주청소" },
-  { value: "move-out", label: "이사청소" },
-  { value: "residential", label: "거주청소" },
-  { value: "office", label: "사무실청소" },
-  { value: "post-construction", label: "준공청소" },
-  { value: "etc", label: "기타 문의" },
-] as const;
-
 const phoneRegex = /^01[0-9]-?\d{3,4}-?\d{4}$/;
 
 export const quoteFormSchema = z.object({
@@ -21,10 +12,7 @@ export const quoteFormSchema = z.object({
     .string()
     .trim()
     .regex(phoneRegex, "올바른 휴대폰 번호 형식으로 입력해주세요. (예: 010-1234-5678)"),
-  serviceType: z.enum(
-    ["move-in", "move-out", "residential", "office", "post-construction", "etc"],
-    { message: "서비스 종류를 선택해주세요." },
-  ),
+  serviceType: z.string().trim().min(1, "서비스 종류를 선택해주세요."),
   area: z
     .string()
     .trim()

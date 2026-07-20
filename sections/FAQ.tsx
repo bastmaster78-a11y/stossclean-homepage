@@ -3,29 +3,34 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { FAQS } from "@/lib/constants";
+import type { FaqItemContent, SectionHeadingContent } from "@/lib/content-schema";
 import { cn } from "@/lib/utils";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 
-export default function FAQ() {
+interface FAQProps {
+  faqs: FaqItemContent[];
+  heading: SectionHeadingContent;
+}
+
+export default function FAQ({ faqs, heading }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section id="faq" className="bg-white py-20 lg:py-28">
       <Container className="max-w-3xl">
         <SectionHeading
-          eyebrow="FAQ"
-          title="자주 묻는 질문"
-          description="궁금하신 점을 먼저 확인해보세요. 원하는 답변이 없다면 언제든 문의해주세요."
+          eyebrow={heading.eyebrow}
+          title={heading.title}
+          description={heading.description}
         />
 
         <div className="mt-12 flex flex-col gap-3">
-          {FAQS.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <motion.div
-                key={faq.question}
+                key={faq.id}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}

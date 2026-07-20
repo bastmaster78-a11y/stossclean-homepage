@@ -1,16 +1,19 @@
 import type { MetadataRoute } from "next";
-import { SITE } from "@/lib/constants";
+import { getContent } from "@/lib/content-store";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const content = await getContent();
   return [
     {
-      url: SITE.url,
+      url: content.site.url,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${SITE.url}/privacy`,
+      url: `${content.site.url}/privacy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.3,

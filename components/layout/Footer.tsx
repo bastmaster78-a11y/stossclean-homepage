@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone, Sparkles } from "lucide-react";
-import { SITE, SERVICES } from "@/lib/constants";
+import type { ServiceContent, SiteInfoContent } from "@/lib/content-schema";
 import Container from "@/components/ui/Container";
 
-export default function Footer() {
+interface FooterProps {
+  site: SiteInfoContent;
+  services: ServiceContent[];
+}
+
+export default function Footer({ site, services }: FooterProps) {
   return (
     <footer className="bg-slate-950 text-slate-400">
       <Container className="py-14">
@@ -14,21 +19,21 @@ export default function Footer() {
                 <Sparkles className="h-5 w-5" />
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-base font-extrabold text-white">{SITE.name}</span>
+                <span className="text-base font-extrabold text-white">{site.name}</span>
                 <span className="text-[11px] font-medium tracking-wider text-brand-400">
-                  {SITE.nameEn}
+                  {site.nameEn}
                 </span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-              {SITE.description}
+              {site.description}
             </p>
           </div>
 
           <div>
             <h3 className="mb-4 text-sm font-semibold text-white">서비스</h3>
             <ul className="space-y-2.5 text-sm">
-              {SERVICES.map((service) => (
+              {services.map((service) => (
                 <li key={service.id}>
                   <Link href="#services" className="transition-colors hover:text-brand-400">
                     {service.title}
@@ -74,19 +79,19 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2.5">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />
-                <a href={`tel:${SITE.phoneRaw}`} className="hover:text-brand-400">
-                  {SITE.phone}
+                <a href={`tel:${site.phoneRaw}`} className="hover:text-brand-400">
+                  {site.phone}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />
-                <a href={`mailto:${SITE.email}`} className="hover:text-brand-400">
-                  {SITE.email}
+                <a href={`mailto:${site.email}`} className="hover:text-brand-400">
+                  {site.email}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />
-                <span>{SITE.address}</span>
+                <span>{site.address}</span>
               </li>
             </ul>
           </div>
@@ -95,14 +100,14 @@ export default function Footer() {
         <div className="mt-12 border-t border-white/10 pt-8">
           <div className="flex flex-col gap-2 text-xs leading-relaxed text-slate-500">
             <p>
-              상호명: {SITE.name}({SITE.nameEn}) &nbsp;|&nbsp; 대표: {SITE.ceo} &nbsp;|&nbsp;
-              사업자등록번호: {SITE.businessNumber}
+              상호명: {site.name}({site.nameEn}) &nbsp;|&nbsp; 대표: {site.ceo} &nbsp;|&nbsp;
+              사업자등록번호: {site.businessNumber}
             </p>
             <p>
-              통신판매업신고번호: {SITE.mailOrderNumber} &nbsp;|&nbsp; 주소: {SITE.address}
+              통신판매업신고번호: {site.mailOrderNumber} &nbsp;|&nbsp; 주소: {site.address}
             </p>
             <p>
-              &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
+              &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
             </p>
           </div>
         </div>

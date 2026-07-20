@@ -5,14 +5,22 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Phone, Send } from "lucide-react";
-import { quoteFormSchema, SERVICE_TYPE_OPTIONS, type QuoteFormSchema } from "@/lib/validations";
-import { SITE } from "@/lib/constants";
+import { quoteFormSchema, type QuoteFormSchema } from "@/lib/validations";
+import type { QuoteContent, SectionHeadingContent, ServiceContent } from "@/lib/content-schema";
 import { cn } from "@/lib/utils";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 import Button from "@/components/ui/Button";
 
-export default function QuoteForm() {
+interface QuoteFormProps {
+  services: ServiceContent[];
+  quote: QuoteContent;
+  heading: SectionHeadingContent;
+  phone: string;
+  phoneRaw: string;
+}
+
+export default function QuoteForm({ services, quote, heading, phone, phoneRaw }: QuoteFormProps) {
   const [submitState, setSubmitState] = useState<"idle" | "success">("idle");
 
   const {
@@ -31,27 +39,29 @@ export default function QuoteForm() {
     reset();
   };
 
+  const serviceOptions = [
+    ...services.map((service) => ({ value: service.id, label: service.title })),
+    { value: "etc", label: "기타 문의" },
+  ];
+
   return (
     <section id="quote" className="bg-slate-50 py-20 lg:py-28">
       <Container className="max-w-4xl">
         <SectionHeading
-          eyebrow="FREE QUOTE"
-          title="무료 견적 문의"
-          description="아래 정보를 남겨주시면 담당 매니저가 빠르게 맞춤 견적을 안내해드립니다."
+          eyebrow={heading.eyebrow}
+          title={heading.title}
+          description={heading.description}
         />
 
         <div className="mt-12 overflow-hidden rounded-3xl bg-white shadow-xl shadow-slate-900/5 ring-1 ring-slate-100">
           <div className="grid grid-cols-1 lg:grid-cols-5">
             <div className="flex flex-col justify-between gap-8 bg-brand-600 p-8 text-white lg:col-span-2 lg:p-10">
               <div>
-                <h3 className="text-xl font-bold">빠른 상담이 필요하신가요?</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/80">
-                  전화 상담으로 더 빠르게 견적을 받아보실 수 있습니다. 평일 오전 9시부터
-                  오후 6시까지 상담 가능합니다.
-                </p>
+                <h3 className="text-xl font-bold">{quote.heading}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-white/80">{quote.paragraph}</p>
               </div>
               <a
-                href={`tel:${SITE.phoneRaw}`}
+                href={`tel:${phoneRaw}`}
                 className="flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-4 backdrop-blur-sm transition-colors hover:bg-white/15"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-brand-600">
@@ -59,19 +69,15 @@ export default function QuoteForm() {
                 </span>
                 <div>
                   <p className="text-xs text-white/70">전화 상담</p>
-                  <p className="text-lg font-bold">{SITE.phone}</p>
+                  <p className="text-lg font-bold">{phone}</p>
                 </div>
               </a>
               <ul className="flex flex-col gap-2.5 text-sm text-white/80">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-white" /> 24시간 이내 견적 회신
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-white" /> 방문 상담 무료 제공
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-white" /> 숨겨진 추가 비용 없음
-                </li>
+                {quote.benefits.map((benefit) => (
+                  <li key={benefit} className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-white" /> {benefit}
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -127,7 +133,7 @@ export default function QuoteForm() {
                         <option value="" disabled>
                           선택해주세요
                         </option>
-                        {SERVICE_TYPE_OPTIONS.map((option) => (
+                        {serviceOptions.map((option) => (
                           <option key={option.value} value={option.value}>
                             {option.label}
                           </option>

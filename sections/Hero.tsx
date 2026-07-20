@@ -3,17 +3,28 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Phone, ShieldCheck, Sparkles, Star } from "lucide-react";
-import { SITE } from "@/lib/constants";
+import type { HeroContent } from "@/lib/content-schema";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 
-const STATS = [
-  { label: "누적 시공 건수", value: "12,000+" },
-  { label: "고객 재이용율", value: "94%" },
-  { label: "평균 만족도", value: "4.9 / 5.0" },
-];
+interface HeroProps {
+  hero: HeroContent;
+  phoneRaw: string;
+}
 
-export default function Hero() {
+function renderHeadline(line: string, highlight: string) {
+  if (!highlight || !line.includes(highlight)) return line;
+  const index = line.indexOf(highlight);
+  return (
+    <>
+      {line.slice(0, index)}
+      <span className="text-brand-600">{highlight}</span>
+      {line.slice(index + highlight.length)}
+    </>
+  );
+}
+
+export default function Hero({ hero, phoneRaw }: HeroProps) {
   return (
     <section
       id="top"
@@ -37,22 +48,21 @@ export default function Hero() {
         >
           <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
             <Sparkles className="h-3.5 w-3.5" />
-            프리미엄 공간 청소 전문
+            {hero.eyebrow}
           </span>
 
           <h1 className="text-4xl font-extrabold leading-[1.2] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]">
-            청소는 기술입니다,
+            {hero.headlineLine1}
             <br />
-            <span className="text-brand-600">신뢰</span>는 스토스클린의 기본입니다.
+            {renderHeadline(hero.headlineLine2, hero.headlineHighlight)}
           </h1>
 
           <p className="max-w-lg text-base leading-relaxed text-slate-500 sm:text-lg">
-            입주청소부터 준공청소까지, 검증된 전문 인력과 정찰제 가격으로
-            공간의 첫인상과 일상의 쾌적함을 완성해드립니다.
+            {hero.paragraph}
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button href={`tel:${SITE.phoneRaw}`} size="lg" icon={<Phone className="h-5 w-5" />}>
+            <Button href={`tel:${phoneRaw}`} size="lg" icon={<Phone className="h-5 w-5" />}>
               전화 문의하기
             </Button>
             <Button
@@ -67,7 +77,7 @@ export default function Hero() {
           </div>
 
           <div className="mt-4 grid w-full grid-cols-3 gap-4 border-t border-slate-200 pt-6">
-            {STATS.map((stat) => (
+            {hero.stats.map((stat) => (
               <div key={stat.label} className="flex flex-col">
                 <span className="text-xl font-bold text-slate-900 sm:text-2xl">
                   {stat.value}
@@ -86,7 +96,7 @@ export default function Hero() {
         >
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-2xl shadow-brand-900/20 sm:aspect-[5/4] lg:aspect-[4/5]">
             <Image
-              src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80"
+              src={hero.image}
               alt="스토스클린 전문 인력이 밝은 거실 공간을 청소하는 모습"
               fill
               priority
@@ -106,8 +116,8 @@ export default function Hero() {
               <ShieldCheck className="h-6 w-6" />
             </span>
             <div className="leading-tight">
-              <p className="text-sm font-bold text-slate-900">배상책임보험 가입</p>
-              <p className="text-xs text-slate-500">안심하고 맡기는 책임 시공</p>
+              <p className="text-sm font-bold text-slate-900">{hero.insuranceBadgeTitle}</p>
+              <p className="text-xs text-slate-500">{hero.insuranceBadgeSubtitle}</p>
             </div>
           </motion.div>
 
@@ -122,7 +132,7 @@ export default function Hero() {
                 <Star key={i} className="h-3.5 w-3.5" fill="currentColor" strokeWidth={0} />
               ))}
             </div>
-            <span className="text-xs font-semibold text-slate-700">4.9점 고객 만족</span>
+            <span className="text-xs font-semibold text-slate-700">{hero.ratingBadgeText}</span>
           </motion.div>
         </motion.div>
       </Container>

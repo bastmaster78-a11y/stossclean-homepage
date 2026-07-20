@@ -3,9 +3,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, MessageCircle, Phone } from "lucide-react";
 import { useScrolled } from "@/hooks/useScrolled";
-import { SITE } from "@/lib/constants";
+import type { SiteInfoContent } from "@/lib/content-schema";
 
-export default function FloatingActions() {
+interface FloatingActionsProps {
+  site: SiteInfoContent;
+}
+
+export default function FloatingActions({ site }: FloatingActionsProps) {
   const visible = useScrolled(400);
 
   return (
@@ -26,7 +30,7 @@ export default function FloatingActions() {
       </AnimatePresence>
 
       <a
-        href={SITE.kakaoUrl}
+        href={site.kakaoUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="카카오톡 상담"
@@ -37,7 +41,7 @@ export default function FloatingActions() {
       </a>
 
       <a
-        href={`tel:${SITE.phoneRaw}`}
+        href={`tel:${site.phoneRaw}`}
         aria-label="전화 문의"
         className="relative flex items-center justify-center rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 transition-transform hover:scale-105"
         style={{ height: "3.25rem", width: "3.25rem" }}

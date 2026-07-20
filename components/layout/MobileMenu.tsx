@@ -3,15 +3,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { Phone, X } from "lucide-react";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS } from "@/lib/constants";
+import type { SiteInfoContent } from "@/lib/content-schema";
 import Button from "@/components/ui/Button";
 
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
+  site: SiteInfoContent;
 }
 
-export default function MobileMenu({ open, onClose }: MobileMenuProps) {
+export default function MobileMenu({ open, onClose, site }: MobileMenuProps) {
   return (
     <AnimatePresence>
       {open && (
@@ -37,9 +39,9 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
           >
             <div className="mb-8 flex items-center justify-between">
               <span className="text-lg font-bold text-brand-700">
-                {SITE.name}
+                {site.name}
                 <span className="ml-1.5 text-sm font-medium text-slate-400">
-                  {SITE.nameEn}
+                  {site.nameEn}
                 </span>
               </span>
               <button
@@ -66,11 +68,11 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
 
             <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-6">
               <a
-                href={`tel:${SITE.phoneRaw}`}
+                href={`tel:${site.phoneRaw}`}
                 className="flex items-center justify-center gap-2 text-sm text-slate-500"
               >
                 <Phone className="h-4 w-4" />
-                {SITE.phone}
+                {site.phone}
               </a>
               <Button href="#quote" onClick={onClose} className="w-full">
                 무료 견적 신청
