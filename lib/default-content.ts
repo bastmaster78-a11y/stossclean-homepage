@@ -199,7 +199,14 @@ export const DEFAULT_CONTENT: SiteContent = {
     ],
   },
 
-  serviceAreas: ["서울특별시", "경기도", "인천광역시"],
+  serviceAreas: [
+    "서울특별시 강남구",
+    "서울특별시 서초구",
+    "서울특별시 송파구",
+    "경기도 수원시",
+    "경기도 성남시",
+    "인천광역시 연수구",
+  ],
 
   testimonials: [
     {
