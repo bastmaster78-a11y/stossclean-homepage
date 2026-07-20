@@ -60,6 +60,11 @@ export const DEFAULT_CONTENT: SiteContent = {
       title: "공간 구석구석, 놓치는 곳 없이",
       description: "주방부터 현관까지, 생활 공간 전체를 세심한 기준으로 관리합니다.",
     },
+    serviceArea: {
+      eyebrow: "SERVICE AREA",
+      title: "서비스 가능 지역",
+      description: "파란색으로 표시된 지역에서 스토스클린 서비스를 이용하실 수 있습니다.",
+    },
     testimonials: {
       eyebrow: "TESTIMONIALS",
       title: "스토스클린을 경험한 고객의 이야기",
@@ -193,6 +198,8 @@ export const DEFAULT_CONTENT: SiteContent = {
       { id: "s6", icon: "DoorOpen", title: "현관", description: "신발장 내부와 바닥 타일까지 첫인상부터 깔끔하게 완성합니다." },
     ],
   },
+
+  serviceAreas: ["서울특별시", "경기도", "인천광역시"],
 
   testimonials: [
     {

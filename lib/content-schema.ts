@@ -48,6 +48,7 @@ export const sectionHeadingsSchema = z.object({
   whyUs: sectionHeadingSchema,
   process: sectionHeadingSchema,
   serviceScope: sectionHeadingSchema,
+  serviceArea: sectionHeadingSchema,
   testimonials: sectionHeadingSchema,
   faq: sectionHeadingSchema,
   quote: sectionHeadingSchema,
@@ -120,6 +121,7 @@ export const siteContentSchema = z.object({
   whyUs: z.array(whyUsItemSchema).min(1, "항목을 1개 이상 입력해주세요."),
   process: z.array(processStepSchema).min(1, "단계를 1개 이상 입력해주세요."),
   serviceScope: serviceScopeSchema,
+  serviceAreas: z.array(z.string()),
   testimonials: z.array(testimonialSchema).min(1, "후기를 1개 이상 입력해주세요."),
   faqs: z.array(faqItemSchema).min(1, "질문을 1개 이상 입력해주세요."),
 });

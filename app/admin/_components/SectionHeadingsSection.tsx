@@ -9,6 +9,7 @@ const GROUPS: { key: keyof SiteContent["sectionHeadings"]; label: string }[] = [
   { key: "whyUs", label: "왜 스토스클린 섹션" },
   { key: "process", label: "작업 프로세스 섹션" },
   { key: "serviceScope", label: "서비스 범위 섹션" },
+  { key: "serviceArea", label: "서비스 가능 지역 섹션" },
   { key: "testimonials", label: "고객 후기 섹션" },
   { key: "faq", label: "자주 묻는 질문 섹션" },
   { key: "quote", label: "무료 견적 섹션" },

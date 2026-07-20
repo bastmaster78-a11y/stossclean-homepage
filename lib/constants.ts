@@ -7,6 +7,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "왜 스토스클린", href: "#why-us" },
   { label: "작업 프로세스", href: "#process" },
   { label: "서비스 범위", href: "#scope" },
+  { label: "서비스 지역", href: "#service-area" },
   { label: "고객 후기", href: "#testimonials" },
   { label: "자주 묻는 질문", href: "#faq" },
   { label: "무료 견적", href: "#quote" },

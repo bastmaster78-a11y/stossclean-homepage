@@ -22,7 +22,7 @@ interface QuoteFormProps {
 }
 
 const AREA_OPTIONS = Array.from({ length: 300 }, (_, i) => `${i + 1}평`);
-const ROOM_COUNT_OPTIONS = Array.from({ length: 10 }, (_, i) => `${i + 1}개`);
+const ROOM_COUNT_OPTIONS = Array.from({ length: 11 }, (_, i) => `${i}개`);
 
 export default function QuoteForm({ services, quote, heading, phone, phoneRaw }: QuoteFormProps) {
   const [submitState, setSubmitState] = useState<"idle" | "success">("idle");

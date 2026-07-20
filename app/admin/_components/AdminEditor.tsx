@@ -14,6 +14,7 @@ import { ServicesSection } from "@/app/admin/_components/ServicesSection";
 import { WhyUsSection } from "@/app/admin/_components/WhyUsSection";
 import { ProcessSection } from "@/app/admin/_components/ProcessSection";
 import { ServiceScopeSection } from "@/app/admin/_components/ServiceScopeSection";
+import { ServiceAreaSection } from "@/app/admin/_components/ServiceAreaSection";
 import { TestimonialsSection } from "@/app/admin/_components/TestimonialsSection";
 import { FaqSection } from "@/app/admin/_components/FaqSection";
 import { QuoteSection } from "@/app/admin/_components/QuoteSection";
@@ -26,6 +27,7 @@ const TABS = [
   { key: "whyUs", label: "선택 이유" },
   { key: "process", label: "작업 절차" },
   { key: "scope", label: "서비스 범위" },
+  { key: "area", label: "서비스 지역" },
   { key: "testimonials", label: "고객 후기" },
   { key: "faq", label: "FAQ" },
   { key: "quote", label: "견적 폼 문구" },
@@ -155,6 +157,9 @@ export function AdminEditor({ initialContent }: { initialContent: SiteContent })
         </div>
         <div className={activeTab === "scope" ? "block" : "hidden"}>
           <ServiceScopeSection form={form} />
+        </div>
+        <div className={activeTab === "area" ? "block" : "hidden"}>
+          <ServiceAreaSection form={form} />
         </div>
         <div className={activeTab === "testimonials" ? "block" : "hidden"}>
           <TestimonialsSection form={form} />
