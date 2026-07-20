@@ -7,6 +7,12 @@ export function areaKey(province: string, district: string) {
   return `${province} ${district}`;
 }
 
+// 세종특별자치시처럼 하위 구역 없이 자기 자신 하나뿐인 지역인지 여부
+// (지역명이 구역명과 중복 표시되는 것을 막기 위해 사용).
+export function isSelfContainedRegion(region: KoreaRegion) {
+  return region.districts.length === 1 && region.districts[0] === region.name;
+}
+
 export const KOREA_REGIONS: KoreaRegion[] = [
   {
     name: "서울특별시",

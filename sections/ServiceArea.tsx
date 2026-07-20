@@ -1,5 +1,5 @@
 import type { SectionHeadingContent } from "@/lib/content-schema";
-import { areaKey, KOREA_REGIONS } from "@/lib/korea-regions";
+import { areaKey, isSelfContainedRegion, KOREA_REGIONS } from "@/lib/korea-regions";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 
@@ -32,8 +32,10 @@ export default function ServiceArea({ serviceAreas, heading }: ServiceAreaProps)
                 key={region.name}
                 className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"
               >
-                <p className="text-sm font-bold text-slate-900">{region.name}</p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
+                {!isSelfContainedRegion(region) && (
+                  <p className="text-sm font-bold text-slate-900">{region.name}</p>
+                )}
+                <div className={isSelfContainedRegion(region) ? "flex flex-wrap gap-1.5" : "mt-3 flex flex-wrap gap-1.5"}>
                   {region.districts.map((district) => (
                     <span
                       key={district}

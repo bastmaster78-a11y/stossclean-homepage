@@ -1,6 +1,6 @@
 "use client";
 
-import { areaKey, KOREA_REGIONS } from "@/lib/korea-regions";
+import { areaKey, isSelfContainedRegion, KOREA_REGIONS } from "@/lib/korea-regions";
 import { cn } from "@/lib/utils";
 
 interface ServiceAreaListProps {
@@ -16,7 +16,9 @@ export function ServiceAreaList({ selected, onToggle, className }: ServiceAreaLi
     <div className={cn("flex flex-col gap-5", className)}>
       {KOREA_REGIONS.map((region) => (
         <div key={region.name}>
-          <p className="mb-2 text-xs font-bold text-slate-500">{region.name}</p>
+          {!isSelfContainedRegion(region) && (
+            <p className="mb-2 text-xs font-bold text-slate-500">{region.name}</p>
+          )}
           <div className="flex flex-wrap gap-1.5">
             {region.districts.map((district) => {
               const key = areaKey(region.name, district);
