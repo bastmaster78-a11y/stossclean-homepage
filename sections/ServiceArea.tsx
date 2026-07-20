@@ -1,6 +1,5 @@
 import type { SectionHeadingContent } from "@/lib/content-schema";
-import { KOREA_REGIONS } from "@/lib/korea-regions";
-import { areaKey } from "@/components/common/ServiceAreaList";
+import { areaKey, KOREA_REGIONS } from "@/lib/korea-regions";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 

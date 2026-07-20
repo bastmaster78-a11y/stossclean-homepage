@@ -1,11 +1,7 @@
 "use client";
 
-import { KOREA_REGIONS } from "@/lib/korea-regions";
+import { areaKey, KOREA_REGIONS } from "@/lib/korea-regions";
 import { cn } from "@/lib/utils";
-
-export function areaKey(province: string, district: string) {
-  return `${province} ${district}`;
-}
 
 interface ServiceAreaListProps {
   selected: string[];

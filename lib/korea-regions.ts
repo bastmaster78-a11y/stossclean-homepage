@@ -3,6 +3,10 @@ export interface KoreaRegion {
   districts: string[];
 }
 
+export function areaKey(province: string, district: string) {
+  return `${province} ${district}`;
+}
+
 export const KOREA_REGIONS: KoreaRegion[] = [
   {
     name: "서울특별시",
