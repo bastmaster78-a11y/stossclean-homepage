@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Phone, Send } from "lucide-react";
 import { quoteFormSchema, type QuoteFormSchema } from "@/lib/validations";
 import type { QuoteContent, SectionHeadingContent, ServiceContent } from "@/lib/content-schema";
+import { KOREA_REGIONS } from "@/lib/korea-regions";
 import { cn } from "@/lib/utils";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/common/SectionHeading";
@@ -20,13 +21,18 @@ interface QuoteFormProps {
   phoneRaw: string;
 }
 
+const AREA_OPTIONS = Array.from({ length: 300 }, (_, i) => `${i + 1}평`);
+
 export default function QuoteForm({ services, quote, heading, phone, phoneRaw }: QuoteFormProps) {
   const [submitState, setSubmitState] = useState<"idle" | "success">("idle");
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<QuoteFormSchema>({
     resolver: zodResolver(quoteFormSchema),
@@ -37,6 +43,21 @@ export default function QuoteForm({ services, quote, heading, phone, phoneRaw }:
     console.log("quote request", data);
     setSubmitState("success");
     reset();
+    setProvince("");
+    setDistrict("");
+  };
+
+  const districtOptions = KOREA_REGIONS.find((region) => region.name === province)?.districts ?? [];
+
+  const handleProvinceChange = (value: string) => {
+    setProvince(value);
+    setDistrict("");
+    setValue("address", "", { shouldValidate: false });
+  };
+
+  const handleDistrictChange = (value: string) => {
+    setDistrict(value);
+    setValue("address", `${province} ${value}`.trim(), { shouldValidate: true });
   };
 
   const serviceOptions = [
@@ -141,22 +162,56 @@ export default function QuoteForm({ services, quote, heading, phone, phoneRaw }:
                       </select>
                     </Field>
                     <Field label="평수" error={errors.area?.message}>
-                      <input
+                      <select
                         {...register("area")}
-                        type="text"
-                        placeholder="예) 24평"
+                        defaultValue=""
                         className={inputClass(!!errors.area)}
-                      />
+                      >
+                        <option value="" disabled>
+                          선택해주세요
+                        </option>
+                        {AREA_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
                     </Field>
                   </div>
 
                   <Field label="주소" error={errors.address?.message}>
-                    <input
-                      {...register("address")}
-                      type="text"
-                      placeholder="시/군/구까지만 입력하셔도 됩니다"
-                      className={inputClass(!!errors.address)}
-                    />
+                    <div className="grid grid-cols-2 gap-3">
+                      <select
+                        value={province}
+                        onChange={(e) => handleProvinceChange(e.target.value)}
+                        className={inputClass(!!errors.address)}
+                      >
+                        <option value="" disabled>
+                          시/도 선택
+                        </option>
+                        {KOREA_REGIONS.map((region) => (
+                          <option key={region.name} value={region.name}>
+                            {region.name}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        value={district}
+                        onChange={(e) => handleDistrictChange(e.target.value)}
+                        disabled={!province}
+                        className={cn(inputClass(!!errors.address), "disabled:cursor-not-allowed disabled:opacity-60")}
+                      >
+                        <option value="" disabled>
+                          시/군/구 선택
+                        </option>
+                        {districtOptions.map((name) => (
+                          <option key={name} value={name}>
+                            {name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <input type="hidden" {...register("address")} />
                   </Field>
 
                   <Field label="문의내용" error={errors.message?.message}>
